@@ -120,13 +120,14 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
           borderBottom: `1px solid ${cat.accentColor}44`,
         }}
       >
-        {/* Decorative large icon watermark */}
+        {/* Decorative watermark — hidden on tiny screens so it doesn't overflow */}
         <div
+          className="hidden sm:block"
           style={{
             position: "absolute",
             right: "-2rem",
             top: "-2rem",
-            fontSize: "18rem",
+            fontSize: "16rem",
             opacity: 0.04,
             lineHeight: 1,
             userSelect: "none",
@@ -136,7 +137,7 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
           {cat.icon}
         </div>
 
-        <div className="max-w-5xl mx-auto px-6 pt-10 pb-14 relative">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-12 relative">
           <button
             onClick={onBack}
             style={{
@@ -145,13 +146,13 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
               border: "none",
               cursor: "pointer",
               fontFamily: "'Georgia', serif",
-              fontSize: "0.85rem",
-              letterSpacing: "0.12em",
+              fontSize: "0.8rem",
+              letterSpacing: "0.1em",
               textTransform: "uppercase",
               display: "flex",
               alignItems: "center",
               gap: "0.4rem",
-              marginBottom: "2.5rem",
+              marginBottom: "2rem",
               opacity: 0.8,
               padding: 0,
             }}
@@ -159,18 +160,18 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
             ← Back to All Products
           </button>
 
-          <div className="flex items-start gap-5">
+          <div className="flex items-start gap-4">
             <div
               style={{
-                width: "72px",
-                height: "72px",
-                borderRadius: "16px",
+                width: "60px",
+                height: "60px",
+                borderRadius: "14px",
                 background: `${cat.accentColor}18`,
                 border: `1px solid ${cat.accentColor}44`,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "2.2rem",
+                fontSize: "1.9rem",
                 flexShrink: 0,
               }}
             >
@@ -180,28 +181,27 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
               <p
                 style={{
                   color: cat.accentColor,
-                  fontSize: "0.75rem",
+                  fontSize: "0.7rem",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  marginBottom: "0.4rem",
-                  fontFamily: "'Georgia', serif",
+                  marginBottom: "0.35rem",
                 }}
               >
                 Our Selection
               </p>
               <h1
                 style={{
-                  fontSize: "clamp(2.4rem, 6vw, 4rem)",
+                  fontSize: "clamp(1.9rem, 8vw, 3.5rem)",
                   fontWeight: 800,
                   color: "#f5f0e8",
-                  lineHeight: 1,
+                  lineHeight: 1.05,
                   letterSpacing: "-0.02em",
-                  marginBottom: "0.75rem",
+                  marginBottom: "0.5rem",
                 }}
               >
                 {cat.category}
               </h1>
-              <p style={{ color: "#888", fontSize: "1.05rem", fontStyle: "italic" }}>
+              <p style={{ color: "#888", fontSize: "1rem", fontStyle: "italic" }}>
                 {cat.tagline}
               </p>
             </div>
@@ -210,14 +210,15 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
       </div>
 
       {/* Item List */}
-      <div className="max-w-5xl mx-auto px-6 py-14">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
         <div
           style={{
-            display: "grid",
+            display: "flex",
+            flexDirection: "column",
             gap: "1px",
             background: "#1e1e1e",
             border: "1px solid #1e1e1e",
-            borderRadius: "20px",
+            borderRadius: "16px",
             overflow: "hidden",
           }}
         >
@@ -226,11 +227,7 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
               key={item.name}
               style={{
                 background: "#111",
-                padding: "2rem 2.5rem",
-                display: "grid",
-                gridTemplateColumns: "2.5rem 1fr auto",
-                gap: "1.5rem",
-                alignItems: "start",
+                padding: "1.4rem 1.25rem",
                 transition: "background 0.2s",
                 cursor: "default",
               }}
@@ -241,110 +238,98 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
                 ((e.currentTarget as HTMLDivElement).style.background = "#111")
               }
             >
-              {/* Index */}
-              <div
-                style={{
-                  fontSize: "0.75rem",
-                  color: cat.accentColor,
-                  opacity: 0.6,
-                  fontVariantNumeric: "tabular-nums",
-                  paddingTop: "0.3rem",
-                  letterSpacing: "0.05em",
-                  fontFamily: "monospace",
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </div>
-
-              {/* Content */}
-              <div>
+              {/* Top row: index + name + style badge */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+                <span
+                  style={{
+                    fontSize: "0.7rem",
+                    color: cat.accentColor,
+                    opacity: 0.6,
+                    fontFamily: "monospace",
+                    letterSpacing: "0.05em",
+                    flexShrink: 0,
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <h2
                   style={{
                     color: "#f5f0e8",
-                    fontSize: "1.25rem",
+                    fontSize: "1.1rem",
                     fontWeight: 700,
-                    marginBottom: "0.5rem",
                     letterSpacing: "-0.01em",
+                    flex: 1,
+                    minWidth: 0,
                   }}
                 >
                   {item.name}
                 </h2>
-                <p
-                  style={{
-                    color: "#999",
-                    fontSize: "0.95rem",
-                    lineHeight: 1.7,
-                    maxWidth: "55ch",
-                    fontStyle: "italic",
-                  }}
-                >
-                  {item.description}
-                </p>
-              </div>
-
-              {/* Meta tags */}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                  gap: "0.4rem",
-                  flexShrink: 0,
-                }}
-              >
                 <span
                   style={{
-                    fontSize: "0.72rem",
-                    letterSpacing: "0.12em",
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.1em",
                     textTransform: "uppercase",
                     color: cat.accentColor,
                     background: `${cat.accentColor}14`,
                     border: `1px solid ${cat.accentColor}30`,
-                    padding: "0.25rem 0.65rem",
+                    padding: "0.2rem 0.55rem",
                     borderRadius: "999px",
                     whiteSpace: "nowrap",
+                    flexShrink: 0,
                   }}
                 >
                   {item.style}
                 </span>
-                <span
-                  style={{
-                    fontSize: "0.72rem",
-                    letterSpacing: "0.08em",
-                    color: "#555",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {item.origin}
-                </span>
               </div>
+
+              {/* Description */}
+              <p
+                style={{
+                  color: "#999",
+                  fontSize: "0.9rem",
+                  lineHeight: 1.7,
+                  fontStyle: "italic",
+                  marginTop: "0.5rem",
+                  marginLeft: "1.6rem",
+                }}
+              >
+                {item.description}
+              </p>
+
+              {/* Origin */}
+              <p
+                style={{
+                  fontSize: "0.72rem",
+                  color: "#555",
+                  letterSpacing: "0.06em",
+                  marginTop: "0.4rem",
+                  marginLeft: "1.6rem",
+                }}
+              >
+                {item.origin}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Bottom note */}
+        {/* Bottom callout */}
         <div
           style={{
-            marginTop: "3rem",
-            padding: "1.75rem 2rem",
-            borderRadius: "16px",
+            marginTop: "2.5rem",
+            padding: "1.5rem",
+            borderRadius: "14px",
             background: "#141414",
             border: "1px solid #222",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "1rem",
-            flexWrap: "wrap",
           }}
         >
-          <p style={{ color: "#666", fontSize: "0.9rem", fontStyle: "italic" }}>
+          <p style={{ color: "#666", fontSize: "0.88rem", fontStyle: "italic", marginBottom: "1rem" }}>
             Don't see what you're looking for? We can special order many bottles.
           </p>
-          <div style={{ display: "flex", gap: "0.75rem" }}>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <a
               href="/contact"
               style={{
-                padding: "0.6rem 1.25rem",
+                padding: "0.65rem 1.25rem",
                 borderRadius: "10px",
                 background: cat.accentColor,
                 color: "#0d0d0d",
@@ -352,6 +337,7 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
                 fontSize: "0.85rem",
                 textDecoration: "none",
                 letterSpacing: "0.04em",
+                flexShrink: 0,
               }}
             >
               Request a Bottle
@@ -359,7 +345,7 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
             <a
               href="tel:+1XXXXXXXXXX"
               style={{
-                padding: "0.6rem 1.25rem",
+                padding: "0.65rem 1.25rem",
                 borderRadius: "10px",
                 border: "1px solid #333",
                 color: "#aaa",
@@ -367,6 +353,7 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
                 fontSize: "0.85rem",
                 textDecoration: "none",
                 letterSpacing: "0.04em",
+                flexShrink: 0,
               }}
             >
               Call Us
