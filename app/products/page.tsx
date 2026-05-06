@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // --- Data ---
 
@@ -47,6 +47,16 @@ const products: Category[] = [
       { name: "Cîroc", description: "Unlike most vodkas, Cîroc is distilled from fine French grapes, giving it a distinctly fresh, fruity character with a crisp, clean finish.", origin: "France", style: "Grape Vodka" },
       { name: "Ketel One", description: "A Dutch classic crafted from 100% non-GMO wheat, distilled in copper pot stills for a fresh, crisp taste with a long, creamy finish.", origin: "Netherlands", style: "Wheat Vodka" },
       { name: "Absolut", description: "A Swedish icon made from winter wheat, featuring a rich, full-bodied taste with a distinct character of grain, dried fruit, and subtle hints of pepper.", origin: "Åhus, Sweden", style: "Wheat Vodka" },
+      { name: "Belvedere", description: "Poland's first luxury vodka, crafted from Dankowskie Diamond Rye and artesian water. Velvety smooth with a natural vanilla sweetness and a clean, warming finish.", origin: "Żyrardów, Poland", style: "Rye Vodka" },
+      { name: "Svedka", description: "A Swedish vodka distilled five times from winter wheat, delivering a crisp, clean taste with a light citrus note. One of the best values in the category.", origin: "Sweden", style: "Wheat Vodka" },
+      { name: "Smirnoff", description: "The world's most recognized vodka. Triple distilled and ten times filtered for a classic, clean profile that's endlessly versatile in cocktails or on the rocks.", origin: "USA", style: "Grain Vodka" },
+      { name: "Skyy", description: "An American vodka quadruple distilled and triple filtered through California limestone, producing an exceptionally clean spirit with a soft, subtle sweetness.", origin: "California, USA", style: "Grain Vodka" },
+      { name: "New Amsterdam", description: "Five times distilled from American grain and filtered three times for a remarkably smooth finish. Slightly sweet with a clean, crisp character that works in any mix.", origin: "California, USA", style: "Grain Vodka" },
+      { name: "Stolichnaya", description: "A storied Russian-style vodka made from wheat and rye, blended with artesian well water. Classic, slightly grainy character with a clean, slightly sweet finish.", origin: "Latvia", style: "Wheat & Rye Vodka" },
+      { name: "Russian Standard", description: "Made from winter wheat grown in the Russian steppes and glacial water from Lake Ladoga. Smooth, slightly sweet, and unmistakably Russian in character.", origin: "St. Petersburg, Russia", style: "Wheat Vodka" },
+      { name: "Pinnacle", description: "A French-made vodka distilled five times in the Cognac region, offering a clean, light-bodied profile at an everyday price point. Popular across a wide range of flavors.", origin: "Cognac, France", style: "Wheat Vodka" },
+      { name: "UV Vodka", description: "A quadruple-distilled grain vodka made in Minnesota with a noticeably smooth, neutral profile. Widely available in a massive range of flavors for cocktail creativity.", origin: "Minnesota, USA", style: "Grain Vodka" },
+      { name: "Wheatley", description: "Crafted at the historic Buffalo Trace Distillery using a micro-batch process and 10-column distillation. Light, clean, and slightly floral — a craft spirit at an accessible price.", origin: "Kentucky, USA", style: "Wheat Vodka" },
     ],
   },
   {
@@ -110,6 +120,10 @@ const products: Category[] = [
 // --- Category Detail Page ---
 
 function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ background: "#0d0d0d", fontFamily: "'Georgia', serif" }}>
       {/* Header Band */}
@@ -499,7 +513,7 @@ export default function ProductsPage() {
 
                   <div className="mt-6">
                     <ul className="space-y-2 text-gray-700">
-                      {cat.items.map((item) => (
+                      {cat.items.slice(0, 5).map((item) => (
                         <li
                           key={item.name}
                           className="flex items-center justify-between rounded-lg px-3 py-2 bg-gray-50 border border-gray-100 hover:bg-gray-100 transition"
@@ -508,6 +522,11 @@ export default function ProductsPage() {
                           <span className="text-gray-400">→</span>
                         </li>
                       ))}
+                      {cat.items.length > 5 && (
+                        <li className="px-3 py-2 text-sm text-gray-400 italic">
+                          + {cat.items.length - 5} more…
+                        </li>
+                      )}
                     </ul>
                   </div>
 
