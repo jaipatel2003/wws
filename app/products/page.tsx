@@ -11,6 +11,12 @@ type Product = {
   style: string;
 };
 
+type Subcategory = {
+  label: string;
+  icon: string;
+  items: Product[];
+};
+
 type Category = {
   category: string;
   tagline: string;
@@ -18,6 +24,7 @@ type Category = {
   icon: string;
   accentColor: string;
   items: Product[];
+  subcategories?: Subcategory[];
 };
 
 const products: Category[] = [
@@ -81,10 +88,78 @@ const products: Category[] = [
     accentColor: "#a0324a",
     items: [
       { name: "Josh Cabernet", description: "A rich and robust California Cabernet Sauvignon with aromas of blackberry, dark chocolate, and hints of mocha. Velvety smooth with a long finish.", origin: "California, USA", style: "Cabernet Sauvignon" },
-      { name: "Kendall-Jackson", description: "The best-selling Chardonnay in the United States. A full-bodied white with tropical fruit flavors, vanilla, and a hint of oak from barrel aging.", origin: "California, USA", style: "Chardonnay" },
-      { name: "Barefoot", description: "America's most awarded wine brand. Approachable and fruit-forward with multiple varietals, perfect for casual gatherings and celebrations alike.", origin: "California, USA", style: "Various" },
-      { name: "La Marca Prosecco", description: "An Italian sparkling wine bursting with flavors of honey, cream, and fresh peach. Bright, crisp bubbles make it perfect for any celebration.", origin: "Veneto, Italy", style: "Prosecco DOC" },
-      { name: "Oyster Bay", description: "A crisp and vibrant New Zealand Sauvignon Blanc with intense aromas of passionfruit, citrus, and fresh herbs, finishing with a clean, refreshing acidity.", origin: "Marlborough, NZ", style: "Sauvignon Blanc" },
+      { name: "Kendall-Jackson Chardonnay", description: "The best-selling Chardonnay in the United States. Full-bodied with tropical fruit flavors, vanilla, and a hint of oak from barrel aging.", origin: "California, USA", style: "Chardonnay" },
+      { name: "Oyster Bay Sauvignon Blanc", description: "A crisp and vibrant New Zealand white with intense aromas of passionfruit, citrus, and fresh herbs, finishing with a clean, refreshing acidity.", origin: "Marlborough, NZ", style: "Sauvignon Blanc" },
+      { name: "Santa Margherita Pinot Grigio", description: "Italy's benchmark Pinot Grigio. Clean and dry with a golden straw color, and a bouquet of golden apple and citrus. Crisp and refreshing on the palate.", origin: "Alto Adige, Italy", style: "Pinot Grigio" },
+      { name: "La Marca Prosecco", description: "An Italian sparkling wine bursting with flavors of honey, cream, and fresh peach. Bright, crisp bubbles make it perfect for any celebration.", origin: "Veneto, Italy", style: "Prosecco" },
+    ],
+    subcategories: [
+      {
+        label: "Cabernet Sauvignon",
+        icon: "🍇",
+        items: [
+          { name: "Josh Cellars", description: "A rich California Cab with aromas of blackberry, dark chocolate, and mocha. Velvety tannins and a long, satisfying finish.", origin: "California, USA", style: "Cabernet Sauvignon" },
+          { name: "Caymus", description: "One of Napa Valley's most celebrated Cabernets. Deep, opulent, and lush with ripe black cherry, cocoa, and a signature plush texture.", origin: "Napa Valley, USA", style: "Cabernet Sauvignon" },
+          { name: "14 Hands", description: "A crowd-pleasing Washington State Cab with ripe plum, blackcurrant, and a touch of cedar. Medium-bodied and approachable.", origin: "Washington, USA", style: "Cabernet Sauvignon" },
+          { name: "Beringer", description: "A classic California Cabernet with notes of black cherry, mocha, and toasted oak. Balanced tannins make it great for both everyday drinking and special occasions.", origin: "Napa Valley, USA", style: "Cabernet Sauvignon" },
+          { name: "Stag's Leap", description: "A legendary Napa Cabernet known for its silky elegance. Deep ruby color with aromas of black plum, cassis, and a long, layered finish.", origin: "Napa Valley, USA", style: "Cabernet Sauvignon" },
+        ],
+      },
+      {
+        label: "Chardonnay",
+        icon: "🥂",
+        items: [
+          { name: "Kendall-Jackson Vintner's Reserve", description: "America's best-selling Chardonnay. Full-bodied with tropical fruit flavors, vanilla, and a perfectly balanced hint of oak.", origin: "California, USA", style: "Chardonnay" },
+          { name: "Rombauer", description: "A cult-favorite Napa Chardonnay famous for its rich, buttery profile. Mango, peach, and vanilla cream on the palate with a long, toasty finish.", origin: "Napa Valley, USA", style: "Chardonnay" },
+          { name: "Kim Crawford", description: "A bright and lively New Zealand Chardonnay with stone fruit and citrus notes, balanced by a fresh, clean acidity. Unoaked and crisp.", origin: "Marlborough, NZ", style: "Chardonnay" },
+          { name: "La Crema", description: "A cool-climate Sonoma Coast Chardonnay with elegant notes of green apple, lemon zest, and toasted hazelnut. Creamy texture with vibrant acidity.", origin: "Sonoma, USA", style: "Chardonnay" },
+          { name: "Sonoma-Cutrer", description: "A refined Russian River Ranches Chardonnay with ripe pear, apple, and honeysuckle aromas. Balanced oak aging adds a layer of creamy complexity.", origin: "Sonoma, USA", style: "Chardonnay" },
+        ],
+      },
+      {
+        label: "Sauvignon Blanc",
+        icon: "🌿",
+        items: [
+          { name: "Oyster Bay", description: "A crisp and vibrant Marlborough Sauvignon Blanc with intense aromas of passionfruit, citrus, and fresh herbs, finishing with clean, refreshing acidity.", origin: "Marlborough, NZ", style: "Sauvignon Blanc" },
+          { name: "Kim Crawford", description: "New Zealand's most popular wine export. Zesty and refreshing with tropical fruit, fresh herbs, and a mouthwatering grapefruit-driven finish.", origin: "Marlborough, NZ", style: "Sauvignon Blanc" },
+          { name: "Whitehaven", description: "An award-winning Marlborough Sauvignon Blanc with expressive passionfruit, lime, and fresh-cut grass aromas. Vibrant and elegantly structured.", origin: "Marlborough, NZ", style: "Sauvignon Blanc" },
+          { name: "Meiomi", description: "A California Sauvignon Blanc with a fruit-forward profile of peach, melon, and white flowers. Soft and easy-drinking with a refreshing finish.", origin: "California, USA", style: "Sauvignon Blanc" },
+          { name: "Cloudy Bay", description: "The wine that put Marlborough Sauvignon Blanc on the map. Intensely aromatic with gooseberry, passionfruit, and a signature mineral, herbaceous edge.", origin: "Marlborough, NZ", style: "Sauvignon Blanc" },
+        ],
+      },
+      {
+        label: "Pinot Grigio",
+        icon: "🍋",
+        items: [
+          { name: "Santa Margherita", description: "Italy's benchmark Pinot Grigio. Dry and elegant with notes of golden apple, citrus, and a clean mineral finish. The wine that defined the category.", origin: "Alto Adige, Italy", style: "Pinot Grigio" },
+          { name: "Cavit", description: "A classic Italian Pinot Grigio from Trentino. Light-bodied and refreshing with subtle pear, apple, and floral notes. Perfect as an aperitivo.", origin: "Trentino, Italy", style: "Pinot Grigio" },
+          { name: "Mezzacorona", description: "A crowd-pleasing Italian Pinot Grigio with a delicate, fruity nose of apple and almond blossom. Dry and crisp with a clean, lingering finish.", origin: "Trentino, Italy", style: "Pinot Grigio" },
+          { name: "Ecco Domani", description: "A light and refreshing Italian Pinot Grigio with notes of fresh melon, green apple, and a subtle floral aroma. Dry and easy to enjoy.", origin: "Delle Venezie, Italy", style: "Pinot Grigio" },
+          { name: "Jermann", description: "A premium Friulian Pinot Grigio with more depth and complexity than most. Stone fruit, almonds, and a long, mineral-driven finish.", origin: "Friuli, Italy", style: "Pinot Grigio" },
+        ],
+      },
+      {
+        label: "Pinot Noir",
+        icon: "🍓",
+        items: [
+          { name: "Meiomi", description: "A smooth and approachable California Pinot Noir blended from Sonoma, Monterey, and Santa Barbara. Bright strawberry, blackberry, and subtle mocha notes.", origin: "California, USA", style: "Pinot Noir" },
+          { name: "The Prisoner", description: "A bold and complex Napa Valley Pinot Noir with rich aromas of dark cherry, plum, and vanilla. Silky tannins and an exceptionally long finish.", origin: "Napa Valley, USA", style: "Pinot Noir" },
+          { name: "La Crema Sonoma", description: "An elegant Sonoma Coast Pinot Noir with vibrant cherry, raspberry, and earthy mushroom notes. Medium-bodied with bright acidity and a silky finish.", origin: "Sonoma, USA", style: "Pinot Noir" },
+          { name: "Mark West", description: "A popular California Pinot Noir known for its smooth, fruit-forward profile. Ripe cherry, vanilla bean, and a hint of spice make it endlessly drinkable.", origin: "California, USA", style: "Pinot Noir" },
+          { name: "Erath", description: "One of Oregon's pioneering Pinot Noirs from the Willamette Valley. Classically structured with red cherry, dried herb, and a beautiful earthy complexity.", origin: "Willamette Valley, USA", style: "Pinot Noir" },
+        ],
+      },
+      {
+        label: "Sparkling & Rosé",
+        icon: "✨",
+        items: [
+          { name: "La Marca Prosecco", description: "An Italian sparkling wine bursting with flavors of honey, cream, and fresh peach. Bright, crisp bubbles make it ideal for any celebration.", origin: "Veneto, Italy", style: "Prosecco DOC" },
+          { name: "Whispering Angel Rosé", description: "The world's most recognized Provençal rosé. Pale salmon pink with delicate strawberry, peach, and a whisper of herbs. Refined and endlessly elegant.", origin: "Provence, France", style: "Rosé" },
+          { name: "Moët & Chandon Brut", description: "The world's most iconic Champagne. Bright fruitiness, a seductive palate, and an elegant maturity. The benchmark for non-vintage Champagne.", origin: "Épernay, France", style: "Champagne" },
+          { name: "Josh Rosé", description: "A vibrant California rosé with flavors of fresh strawberry, watermelon, and a hint of rose petal. Crisp, refreshing, and perfect for warm weather.", origin: "California, USA", style: "Rosé" },
+          { name: "Barefoot Bubbly", description: "A fun, approachable sparkling wine available in multiple flavors. Sweet and fruity with lively bubbles — perfect for celebrations on any budget.", origin: "California, USA", style: "Sparkling" },
+        ],
+      },
     ],
   },
   {
@@ -116,6 +191,89 @@ const products: Category[] = [
     ],
   },
 ];
+
+// --- Shared Item Row ---
+
+function ItemRow({ item, index, accentColor }: { item: Product; index: number; accentColor: string }) {
+  return (
+    <div
+      style={{
+        background: "#111",
+        padding: "1.4rem 1.25rem",
+        transition: "background 0.2s",
+        cursor: "default",
+      }}
+      onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = "#161616")}
+      onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = "#111")}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+        <span
+          style={{
+            fontSize: "0.7rem",
+            color: accentColor,
+            opacity: 0.6,
+            fontFamily: "monospace",
+            letterSpacing: "0.05em",
+            flexShrink: 0,
+          }}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <h2
+          style={{
+            color: "#f5f0e8",
+            fontSize: "1.1rem",
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          {item.name}
+        </h2>
+        <span
+          style={{
+            fontSize: "0.68rem",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: accentColor,
+            background: `${accentColor}14`,
+            border: `1px solid ${accentColor}30`,
+            padding: "0.2rem 0.55rem",
+            borderRadius: "999px",
+            whiteSpace: "nowrap",
+            flexShrink: 0,
+          }}
+        >
+          {item.style}
+        </span>
+      </div>
+      <p
+        style={{
+          color: "#999",
+          fontSize: "0.9rem",
+          lineHeight: 1.7,
+          fontStyle: "italic",
+          marginTop: "0.5rem",
+          marginLeft: "1.6rem",
+        }}
+      >
+        {item.description}
+      </p>
+      <p
+        style={{
+          fontSize: "0.72rem",
+          color: "#555",
+          letterSpacing: "0.06em",
+          marginTop: "0.4rem",
+          marginLeft: "1.6rem",
+        }}
+      >
+        {item.origin}
+      </p>
+    </div>
+  );
+}
 
 // --- Category Detail Page ---
 
@@ -225,106 +383,83 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
 
       {/* Item List */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1px",
-            background: "#1e1e1e",
-            border: "1px solid #1e1e1e",
-            borderRadius: "16px",
-            overflow: "hidden",
-          }}
-        >
-          {cat.items.map((item, i) => (
-            <div
-              key={item.name}
-              style={{
-                background: "#111",
-                padding: "1.4rem 1.25rem",
-                transition: "background 0.2s",
-                cursor: "default",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLDivElement).style.background = "#161616")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLDivElement).style.background = "#111")
-              }
-            >
-              {/* Top row: index + name + style badge */}
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
-                <span
+        {cat.subcategories ? (
+          /* Subcategory layout (e.g. Wine) */
+          <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+            {cat.subcategories.map((sub) => (
+              <div key={sub.label}>
+                {/* Subcategory header */}
+                <div
                   style={{
-                    fontSize: "0.7rem",
-                    color: cat.accentColor,
-                    opacity: 0.6,
-                    fontFamily: "monospace",
-                    letterSpacing: "0.05em",
-                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.6rem",
+                    marginBottom: "0.75rem",
+                    paddingBottom: "0.6rem",
+                    borderBottom: `1px solid ${cat.accentColor}30`,
                   }}
                 >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h2
+                  <span style={{ fontSize: "1.1rem" }}>{sub.icon}</span>
+                  <h3
+                    style={{
+                      color: "#f5f0e8",
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {sub.label}
+                  </h3>
+                  <span
+                    style={{
+                      fontSize: "0.7rem",
+                      color: cat.accentColor,
+                      opacity: 0.6,
+                      marginLeft: "auto",
+                    }}
+                  >
+                    {sub.items.length} bottles
+                  </span>
+                </div>
+
+                {/* Items */}
+                <div
                   style={{
-                    color: "#f5f0e8",
-                    fontSize: "1.1rem",
-                    fontWeight: 700,
-                    letterSpacing: "-0.01em",
-                    flex: 1,
-                    minWidth: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1px",
+                    background: "#1e1e1e",
+                    border: "1px solid #1e1e1e",
+                    borderRadius: "14px",
+                    overflow: "hidden",
                   }}
                 >
-                  {item.name}
-                </h2>
-                <span
-                  style={{
-                    fontSize: "0.68rem",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: cat.accentColor,
-                    background: `${cat.accentColor}14`,
-                    border: `1px solid ${cat.accentColor}30`,
-                    padding: "0.2rem 0.55rem",
-                    borderRadius: "999px",
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
-                  }}
-                >
-                  {item.style}
-                </span>
+                  {sub.items.map((item, i) => (
+                    <ItemRow key={item.name} item={item} index={i} accentColor={cat.accentColor} />
+                  ))}
+                </div>
               </div>
-
-              {/* Description */}
-              <p
-                style={{
-                  color: "#999",
-                  fontSize: "0.9rem",
-                  lineHeight: 1.7,
-                  fontStyle: "italic",
-                  marginTop: "0.5rem",
-                  marginLeft: "1.6rem",
-                }}
-              >
-                {item.description}
-              </p>
-
-              {/* Origin */}
-              <p
-                style={{
-                  fontSize: "0.72rem",
-                  color: "#555",
-                  letterSpacing: "0.06em",
-                  marginTop: "0.4rem",
-                  marginLeft: "1.6rem",
-                }}
-              >
-                {item.origin}
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          /* Standard flat layout */
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1px",
+              background: "#1e1e1e",
+              border: "1px solid #1e1e1e",
+              borderRadius: "16px",
+              overflow: "hidden",
+            }}
+          >
+            {cat.items.map((item, i) => (
+              <ItemRow key={item.name} item={item} index={i} accentColor={cat.accentColor} />
+            ))}
+          </div>
+        )}
 
         {/* Bottom callout */}
         <div
