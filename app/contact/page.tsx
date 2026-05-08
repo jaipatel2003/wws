@@ -1,104 +1,257 @@
 export default function ContactPage() {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-6xl mx-auto py-16 px-6">
-          {/* Header */}
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
-              Contact & Location
+      <div style={{ minHeight: "100vh", background: "#faf7f2", fontFamily: "'Georgia', serif" }}>
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+          .contact-btn-primary { transition: background 0.2s; }
+          .contact-btn-primary:hover { background: #a87820 !important; }
+          .contact-btn-secondary { transition: background 0.2s, border-color 0.2s; }
+          .contact-btn-secondary:hover { background: rgba(255,255,255,0.06) !important; }
+          .contact-info-row { transition: background 0.15s; }
+          .contact-info-row:hover { background: rgba(200,146,42,0.04) !important; }
+          .cta-call { transition: background 0.2s; }
+          .cta-call:hover { background: #a87820 !important; }
+          .hours-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
+          .hours-row:last-child { border-bottom: none; }
+        `}</style>
+  
+        {/* ── Hero Banner ── */}
+        <div style={{
+          background: "#1a1208",
+          borderBottom: "1px solid #2e2010",
+          position: "relative",
+          overflow: "hidden",
+        }}>
+          <div style={{
+            position: "absolute", top: "-80px", right: "-60px",
+            width: "400px", height: "400px", borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(200,146,42,0.1) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }} />
+          <div style={{
+            position: "absolute", inset: 0, pointerEvents: "none",
+            backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px)",
+          }} />
+  
+          <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "4rem 1.5rem 3.5rem", position: "relative" }}>
+            <p style={{
+              fontFamily: "'Jost', sans-serif", fontSize: "0.7rem",
+              letterSpacing: "0.28em", textTransform: "uppercase",
+              color: "#c8922a", marginBottom: "0.75rem",
+            }}>
+              Westford Wine & Spirits
+            </p>
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(2.8rem, 8vw, 5rem)",
+              fontWeight: 300, color: "#f0ebe0",
+              lineHeight: 1, letterSpacing: "-0.02em",
+              margin: "0 0 1.25rem",
+            }}>
+              Visit Us
             </h1>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl">
-              Visit us in-store or reach out anytime for availability, pricing,
-              or special requests.
+            <p style={{
+              fontFamily: "'Jost', sans-serif", fontWeight: 300,
+              color: "#7a6a52", fontSize: "0.95rem", maxWidth: "420px",
+              lineHeight: 1.7, letterSpacing: "0.02em",
+            }}>
+              Stop in anytime, or reach out for availability, special orders, and pricing.
             </p>
           </div>
+        </div>
   
-          {/* Content Grid */}
-          <div className="mt-12 grid lg:grid-cols-2 gap-8">
-            {/* Info Card */}
-            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
-              <h2 className="text-2xl font-bold text-gray-900">
+        {/* ── Main Content ── */}
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "1.5px",
+            background: "#e4d8c8",
+            border: "1px solid #e4d8c8",
+            borderRadius: "8px",
+            overflow: "hidden",
+          }}>
+  
+            {/* ── Store Info Panel ── */}
+            <div style={{ background: "#fff", padding: "2.5rem" }}>
+              <p style={{
+                fontFamily: "'Jost', sans-serif", fontSize: "0.68rem",
+                letterSpacing: "0.22em", textTransform: "uppercase",
+                color: "#c8922a", marginBottom: "0.5rem",
+              }}>
+                Find Us
+              </p>
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "2rem", fontWeight: 400,
+                color: "#1a1208", margin: "0 0 2rem", letterSpacing: "0.01em",
+              }}>
                 Store Information
               </h2>
   
-              <div className="mt-6 space-y-4 text-gray-700">
-                <div className="flex items-start gap-3">
-                  <span className="text-xl">📍</span>
-                  <p>
-                    <span className="font-semibold text-gray-900">Address:</span>
-                    <br />
-                    9 Cornerstone Square, Westford, MA 01886
-                  </p>
+              {/* Info rows */}
+              {[
+                {
+                  icon: "📍",
+                  label: "Address",
+                  value: "9 Cornerstone Square\nWestford, MA 01886",
+                },
+                {
+                  icon: "📞",
+                  label: "Phone",
+                  value: "(978) 692-9161",
+                  href: "tel:+19786929161",
+                },
+                {
+                  icon: "✉️",
+                  label: "Email",
+                  value: "westfordwine@gmail.com",
+                  href: "mailto:westfordwine@gmail.com",
+                },
+              ].map(({ icon, label, value, href }) => (
+                <div
+                  key={label}
+                  className="contact-info-row"
+                  style={{
+                    display: "flex", gap: "1rem",
+                    padding: "1rem 0.75rem",
+                    borderRadius: "4px",
+                    marginBottom: "0.25rem",
+                  }}
+                >
+                  <span style={{ fontSize: "1.1rem", flexShrink: 0, marginTop: "0.1rem" }}>{icon}</span>
+                  <div>
+                    <p style={{
+                      fontFamily: "'Jost', sans-serif", fontSize: "0.65rem",
+                      letterSpacing: "0.18em", textTransform: "uppercase",
+                      color: "#b0a090", margin: "0 0 0.2rem",
+                    }}>
+                      {label}
+                    </p>
+                    {href ? (
+                      <a href={href} style={{
+                        fontFamily: "'Jost', sans-serif", fontSize: "0.92rem",
+                        color: "#2a1f14", textDecoration: "none",
+                        fontWeight: 400, whiteSpace: "pre-line",
+                      }}>
+                        {value}
+                      </a>
+                    ) : (
+                      <p style={{
+                        fontFamily: "'Jost', sans-serif", fontSize: "0.92rem",
+                        color: "#2a1f14", margin: 0, whiteSpace: "pre-line",
+                      }}>
+                        {value}
+                      </p>
+                    )}
+                  </div>
                 </div>
-  
-                <div className="flex items-start gap-3">
-                  <span className="text-xl">📞</span>
-                  <p>
-                    <span className="font-semibold text-gray-900">Phone:</span>
-                    <br />
-                    (978) 692-9161
-                  </p>
-                </div>
-  
-                <div className="flex items-start gap-3">
-                  <span className="text-xl">✉️</span>
-                  <p>
-                    <span className="font-semibold text-gray-900">Email:</span>
-                    <br />
-                    westfordwine@gmail.com
-                  </p>
-                </div>
-              </div>
+              ))}
   
               {/* Hours */}
-              <div className="mt-8 border-t pt-6">
-                <h3 className="text-lg font-bold text-gray-900">Hours</h3>
-  
-                <div className="mt-3 space-y-2 text-gray-700">
-                  <div className="flex justify-between">
-                    <span>Mon - Sat</span>
-                    <span className="font-medium">8:00 AM – 9:00 PM</span>
+              <div style={{
+                marginTop: "2rem",
+                padding: "1.5rem",
+                background: "#faf7f2",
+                border: "1px solid #ede8e0",
+                borderRadius: "6px",
+              }}>
+                <p style={{
+                  fontFamily: "'Jost', sans-serif", fontSize: "0.65rem",
+                  letterSpacing: "0.2em", textTransform: "uppercase",
+                  color: "#c8922a", marginBottom: "1rem",
+                }}>
+                  Hours
+                </p>
+                {[
+                  { days: "Monday – Saturday", hours: "8:00 AM – 9:00 PM" },
+                  { days: "Sunday", hours: "10:00 AM – 8:00 PM" },
+                ].map(({ days, hours }) => (
+                  <div
+                    key={days}
+                    className="hours-row"
+                    style={{
+                      display: "flex", justifyContent: "space-between",
+                      alignItems: "baseline", padding: "0.6rem 0",
+                    }}
+                  >
+                    <span style={{ fontFamily: "'Jost', sans-serif", fontSize: "0.85rem", color: "#5a4a38" }}>
+                      {days}
+                    </span>
+                    <span style={{
+                      fontFamily: "'Jost', sans-serif", fontSize: "0.85rem",
+                      color: "#2a1f14", fontWeight: 500, letterSpacing: "0.02em",
+                    }}>
+                      {hours}
+                    </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Sunday</span>
-                    <span className="font-medium">10:00 AM – 8:00 PM</span>
-                  </div>
-                </div>
+                ))}
               </div>
   
-              {/* Quick Actions */}
-              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              {/* Action buttons */}
+              <div style={{ display: "flex", gap: "0.75rem", marginTop: "2rem", flexWrap: "wrap" }}>
                 <a
                   href="tel:+19786929161"
-                  className="flex-1 text-center rounded-xl bg-gray-900 text-white py-3 font-bold hover:bg-gray-800 transition"
+                  className="contact-btn-primary"
+                  style={{
+                    flex: 1, textAlign: "center",
+                    fontFamily: "'Jost', sans-serif", fontSize: "0.72rem",
+                    letterSpacing: "0.14em", textTransform: "uppercase",
+                    color: "#0f0d0a", background: "#c8922a",
+                    padding: "0.75rem 1rem", borderRadius: "4px",
+                    textDecoration: "none", fontWeight: 500,
+                    minWidth: "120px",
+                  }}
                 >
                   Call Now
                 </a>
                 <a
                   href="mailto:westfordwine@gmail.com"
-                  className="flex-1 text-center rounded-xl border border-gray-300 bg-white py-3 font-bold hover:bg-gray-50 transition"
+                  className="contact-btn-secondary"
+                  style={{
+                    flex: 1, textAlign: "center",
+                    fontFamily: "'Jost', sans-serif", fontSize: "0.72rem",
+                    letterSpacing: "0.14em", textTransform: "uppercase",
+                    color: "#5a4a38", border: "1px solid #ddd0bc",
+                    padding: "0.75rem 1rem", borderRadius: "4px",
+                    textDecoration: "none", fontWeight: 400,
+                    minWidth: "120px", background: "transparent",
+                  }}
                 >
                   Email Us
                 </a>
               </div>
             </div>
   
-            {/* Map Card */}
-            <div className="rounded-3xl overflow-hidden border border-gray-200 bg-white shadow-sm">
-              <div className="p-5 border-b">
-                <h2 className="text-xl font-bold text-gray-900">
+            {/* ── Map Panel ── */}
+            <div style={{ background: "#fff", display: "flex", flexDirection: "column", minHeight: "480px" }}>
+              <div style={{ padding: "2rem 2rem 1.25rem", borderBottom: "1px solid #ede8e0" }}>
+                <p style={{
+                  fontFamily: "'Jost', sans-serif", fontSize: "0.68rem",
+                  letterSpacing: "0.22em", textTransform: "uppercase",
+                  color: "#c8922a", marginBottom: "0.4rem",
+                }}>
+                  Location
+                </p>
+                <h2 style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "1.6rem", fontWeight: 400,
+                  color: "#1a1208", margin: 0,
+                }}>
                   Find Us Here
                 </h2>
-                <p className="text-sm text-gray-500 mt-1">
+                <p style={{
+                  fontFamily: "'Jost', sans-serif", fontSize: "0.78rem",
+                  color: "#a0907a", marginTop: "0.3rem",
+                }}>
                   Conveniently located in Westford, MA
                 </p>
               </div>
-  
-              <div className="h-[420px]">
+              <div style={{ flex: 1 }}>
                 <iframe
                   title="Google Map"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3665.4894247122515!2d-71.43069002321229!3d42.56562337117454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e397d56b668eeb%3A0x640567b57c612984!2s9%20Cornerstone%20Square%2C%20Westford%2C%20MA%2001886!5e1!3m2!1sen!2sus!4v1777943194941!5m2!1sen!2sus"
-                  className="w-full h-full"
+                  style={{ width: "100%", height: "100%", minHeight: "360px", border: "none", display: "block" }}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
@@ -106,24 +259,69 @@ export default function ContactPage() {
             </div>
           </div>
   
-          {/* Bottom CTA */}
-          <div className="mt-16 text-center">
-            <h3 className="text-2xl font-bold text-gray-900">
-              Looking for something specific?
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Call us — we can check availability or special order items.
-            </p>
-  
-            <div className="mt-6">
-              <a
-                href="tel:+19786929161"
-                className="inline-block px-8 py-3 rounded-xl bg-yellow-400 text-black font-extrabold hover:bg-yellow-300 transition"
-              >
-                Call (978) 692-9161
-              </a>
+          {/* ── Bottom Banner ── */}
+          <div style={{
+            marginTop: "4rem",
+            background: "#1a1208",
+            borderRadius: "8px",
+            padding: "3rem 2.5rem",
+            display: "flex", flexWrap: "wrap",
+            alignItems: "center", justifyContent: "space-between",
+            gap: "2rem",
+            position: "relative", overflow: "hidden",
+            textAlign: "left",
+          }}>
+            <div style={{
+              position: "absolute", top: "-60px", right: "-60px",
+              width: "300px", height: "300px", borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(200,146,42,0.12) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }} />
+            <div style={{ position: "relative" }}>
+              <p style={{
+                fontFamily: "'Jost', sans-serif", fontSize: "0.68rem",
+                letterSpacing: "0.22em", textTransform: "uppercase",
+                color: "#c8922a", marginBottom: "0.5rem",
+              }}>
+                Special Orders Welcome
+              </p>
+              <h3 style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(1.6rem, 4vw, 2.4rem)", fontWeight: 300,
+                color: "#f0ebe0", margin: "0 0 0.75rem", lineHeight: 1.1,
+              }}>
+                Looking for something specific?
+              </h3>
+              <p style={{
+                fontFamily: "'Jost', sans-serif", fontWeight: 300,
+                color: "#7a6a52", fontSize: "0.88rem", maxWidth: "400px", lineHeight: 1.7,
+              }}>
+                Call us — we can check availability or place a special order for you.
+              </p>
             </div>
+            <a
+              href="tel:+19786929161"
+              className="cta-call"
+              style={{
+                fontFamily: "'Jost', sans-serif", fontSize: "0.8rem",
+                letterSpacing: "0.14em", textTransform: "uppercase",
+                color: "#0f0d0a", background: "#c8922a",
+                padding: "0.9rem 2rem", borderRadius: "4px",
+                textDecoration: "none", fontWeight: 500,
+                position: "relative", whiteSpace: "nowrap",
+              }}
+            >
+              Call (978) 692-9161
+            </a>
           </div>
+  
+          <p style={{
+            fontFamily: "'Jost', sans-serif", fontSize: "0.7rem",
+            color: "#c0b0a0", textAlign: "center", marginTop: "2rem",
+            letterSpacing: "0.06em",
+          }}>
+            * Hours may vary on holidays. Call ahead to confirm.
+          </p>
         </div>
       </div>
     );

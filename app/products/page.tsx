@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-// --- Data ---
+// --- Data (unchanged) ---
 
 type Product = {
   name: string;
@@ -192,188 +192,142 @@ const products: Category[] = [
   },
 ];
 
-// --- Shared Item Row ---
+// ─────────────────────────────────────────────
+// SHARED: Item Row for detail pages
+// ─────────────────────────────────────────────
 
 function ItemRow({ item, index, accentColor }: { item: Product; index: number; accentColor: string }) {
+  const [hovered, setHovered] = useState(false);
   return (
     <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
-        background: "#111",
-        padding: "1.4rem 1.25rem",
+        display: "grid",
+        gridTemplateColumns: "2rem 1fr",
+        gap: "1rem",
+        padding: "1.1rem 1.5rem",
+        background: hovered ? "rgba(255,255,255,0.03)" : "transparent",
+        borderBottom: "1px solid rgba(255,255,255,0.05)",
         transition: "background 0.2s",
         cursor: "default",
       }}
-      onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = "#161616")}
-      onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = "#111")}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
-        <span
-          style={{
-            fontSize: "0.7rem",
-            color: accentColor,
-            opacity: 0.6,
-            fontFamily: "monospace",
-            letterSpacing: "0.05em",
-            flexShrink: 0,
-          }}
-        >
-          {String(index + 1).padStart(2, "0")}
-        </span>
-        <h2
-          style={{
-            color: "#f5f0e8",
-            fontSize: "1.1rem",
-            fontWeight: 700,
-            letterSpacing: "-0.01em",
-            flex: 1,
-            minWidth: 0,
-          }}
-        >
-          {item.name}
-        </h2>
-        <span
-          style={{
-            fontSize: "0.68rem",
-            letterSpacing: "0.1em",
+      <span style={{ color: accentColor, opacity: 0.4, fontFamily: "monospace", fontSize: "0.72rem", paddingTop: "0.2rem" }}>
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <div>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem", flexWrap: "wrap" }}>
+          <span style={{ color: "#f0ebe0", fontSize: "1rem", fontWeight: 600, letterSpacing: "0.01em" }}>
+            {item.name}
+          </span>
+          <span style={{
+            fontSize: "0.65rem",
+            letterSpacing: "0.12em",
             textTransform: "uppercase",
             color: accentColor,
-            background: `${accentColor}14`,
-            border: `1px solid ${accentColor}30`,
-            padding: "0.2rem 0.55rem",
-            borderRadius: "999px",
+            border: `1px solid ${accentColor}50`,
+            padding: "0.15rem 0.5rem",
+            borderRadius: "2px",
             whiteSpace: "nowrap",
-            flexShrink: 0,
-          }}
-        >
-          {item.style}
-        </span>
+          }}>
+            {item.style}
+          </span>
+        </div>
+        <p style={{ color: "#888", fontSize: "0.85rem", lineHeight: 1.65, marginTop: "0.3rem", fontStyle: "italic" }}>
+          {item.description}
+        </p>
+        <p style={{ color: "#555", fontSize: "0.7rem", marginTop: "0.3rem", letterSpacing: "0.06em" }}>
+          {item.origin}
+        </p>
       </div>
-      <p
-        style={{
-          color: "#999",
-          fontSize: "0.9rem",
-          lineHeight: 1.7,
-          fontStyle: "italic",
-          marginTop: "0.5rem",
-          marginLeft: "1.6rem",
-        }}
-      >
-        {item.description}
-      </p>
-      <p
-        style={{
-          fontSize: "0.72rem",
-          color: "#555",
-          letterSpacing: "0.06em",
-          marginTop: "0.4rem",
-          marginLeft: "1.6rem",
-        }}
-      >
-        {item.origin}
-      </p>
     </div>
   );
 }
 
-// --- Category Detail Page ---
+// ─────────────────────────────────────────────
+// DETAIL PAGE
+// ─────────────────────────────────────────────
 
 function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, []);
+
+  const totalItems = cat.subcategories
+    ? cat.subcategories.reduce((sum, s) => sum + s.items.length, 0)
+    : cat.items.length;
 
   return (
-    <div className="min-h-screen" style={{ background: "#0d0d0d", fontFamily: "'Georgia', serif" }}>
-      {/* Header Band */}
-      <div
-        className="relative overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, #111 0%, #1a1a1a 60%, ${cat.accentColor}22 100%)`,
-          borderBottom: `1px solid ${cat.accentColor}44`,
-        }}
-      >
-        {/* Decorative watermark — hidden on tiny screens so it doesn't overflow */}
-        <div
-          className="hidden sm:block"
-          style={{
-            position: "absolute",
-            right: "-2rem",
-            top: "-2rem",
-            fontSize: "16rem",
-            opacity: 0.04,
-            lineHeight: 1,
-            userSelect: "none",
-            pointerEvents: "none",
-          }}
-        >
-          {cat.icon}
-        </div>
+    <div style={{ minHeight: "100vh", background: "#0f0d0a", fontFamily: "'Georgia', serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+        .detail-back:hover { opacity: 1 !important; }
+        .detail-item-list > div:last-child { border-bottom: none !important; }
+      `}</style>
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-12 relative">
+      {/* Hero header */}
+      <div style={{
+        position: "relative",
+        overflow: "hidden",
+        borderBottom: `1px solid ${cat.accentColor}30`,
+        background: `linear-gradient(160deg, #1a1410 0%, #0f0d0a 70%)`,
+      }}>
+        {/* Decorative gradient orb */}
+        <div style={{
+          position: "absolute", top: "-80px", right: "-60px",
+          width: "400px", height: "400px", borderRadius: "50%",
+          background: `radial-gradient(circle, ${cat.accentColor}18 0%, transparent 70%)`,
+          pointerEvents: "none",
+        }} />
+
+        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "2.5rem 1.5rem 3rem" }}>
           <button
+            className="detail-back"
             onClick={onBack}
             style={{
-              color: cat.accentColor,
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontFamily: "'Georgia', serif",
-              fontSize: "0.8rem",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              marginBottom: "2rem",
-              opacity: 0.8,
-              padding: 0,
+              background: "none", border: "none", cursor: "pointer",
+              color: cat.accentColor, opacity: 0.6,
+              fontFamily: "'Jost', sans-serif", fontSize: "0.72rem",
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              display: "flex", alignItems: "center", gap: "0.5rem",
+              marginBottom: "2.5rem", padding: 0, transition: "opacity 0.2s",
             }}
           >
-            ← Back to All Products
+            ← All Products
           </button>
 
-          <div className="flex items-start gap-4">
-            <div
-              style={{
-                width: "60px",
-                height: "60px",
-                borderRadius: "14px",
-                background: `${cat.accentColor}18`,
-                border: `1px solid ${cat.accentColor}44`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "1.9rem",
-                flexShrink: 0,
-              }}
-            >
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "1.5rem" }}>
+            <div style={{
+              fontSize: "3rem", lineHeight: 1,
+              background: `${cat.accentColor}15`,
+              border: `1px solid ${cat.accentColor}30`,
+              borderRadius: "12px",
+              width: "64px", height: "64px",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+            }}>
               {cat.icon}
             </div>
             <div>
-              <p
-                style={{
-                  color: cat.accentColor,
-                  fontSize: "0.7rem",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  marginBottom: "0.35rem",
-                }}
-              >
-                Our Selection
+              <p style={{
+                fontFamily: "'Jost', sans-serif", fontSize: "0.68rem",
+                letterSpacing: "0.25em", textTransform: "uppercase",
+                color: cat.accentColor, marginBottom: "0.5rem",
+              }}>
+                Our Selection · {totalItems} bottles
               </p>
-              <h1
-                style={{
-                  fontSize: "clamp(1.9rem, 8vw, 3.5rem)",
-                  fontWeight: 800,
-                  color: "#f5f0e8",
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.02em",
-                  marginBottom: "0.5rem",
-                }}
-              >
+              <h1 style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(2.2rem, 8vw, 3.8rem)",
+                fontWeight: 300, color: "#f0ebe0",
+                lineHeight: 1, letterSpacing: "-0.01em", margin: 0,
+              }}>
                 {cat.category}
               </h1>
-              <p style={{ color: "#888", fontSize: "1rem", fontStyle: "italic" }}>
+              <p style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                color: "#6a5a4a", fontSize: "1.1rem",
+                fontStyle: "italic", marginTop: "0.5rem",
+              }}>
                 {cat.tagline}
               </p>
             </div>
@@ -381,60 +335,34 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
         </div>
       </div>
 
-      {/* Item List */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+      {/* Content */}
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "2.5rem 1.5rem 4rem" }}>
         {cat.subcategories ? (
-          /* Subcategory layout (e.g. Wine) */
-          <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "3rem" }}>
             {cat.subcategories.map((sub) => (
               <div key={sub.label}>
-                {/* Subcategory header */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.6rem",
-                    marginBottom: "0.75rem",
-                    paddingBottom: "0.6rem",
-                    borderBottom: `1px solid ${cat.accentColor}30`,
-                  }}
-                >
-                  <span style={{ fontSize: "1.1rem" }}>{sub.icon}</span>
-                  <h3
-                    style={{
-                      color: "#f5f0e8",
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.05em",
-                      textTransform: "uppercase",
-                    }}
-                  >
+                <div style={{
+                  display: "flex", alignItems: "center", gap: "0.75rem",
+                  marginBottom: "1rem",
+                }}>
+                  <span style={{ fontSize: "1rem" }}>{sub.icon}</span>
+                  <h2 style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "1.4rem", fontWeight: 400,
+                    color: "#d4c4a8", letterSpacing: "0.02em", margin: 0,
+                  }}>
                     {sub.label}
-                  </h3>
-                  <span
-                    style={{
-                      fontSize: "0.7rem",
-                      color: cat.accentColor,
-                      opacity: 0.6,
-                      marginLeft: "auto",
-                    }}
-                  >
+                  </h2>
+                  <div style={{ flex: 1, height: "1px", background: `${cat.accentColor}25`, marginLeft: "0.5rem" }} />
+                  <span style={{ fontFamily: "'Jost', sans-serif", fontSize: "0.68rem", color: "#555", letterSpacing: "0.1em" }}>
                     {sub.items.length} bottles
                   </span>
                 </div>
-
-                {/* Items */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1px",
-                    background: "#1e1e1e",
-                    border: "1px solid #1e1e1e",
-                    borderRadius: "14px",
-                    overflow: "hidden",
-                  }}
-                >
+                <div className="detail-item-list" style={{
+                  border: `1px solid rgba(255,255,255,0.07)`,
+                  borderRadius: "8px", overflow: "hidden",
+                  background: "rgba(255,255,255,0.015)",
+                }}>
                   {sub.items.map((item, i) => (
                     <ItemRow key={item.name} item={item} index={i} accentColor={cat.accentColor} />
                   ))}
@@ -443,70 +371,50 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
             ))}
           </div>
         ) : (
-          /* Standard flat layout */
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1px",
-              background: "#1e1e1e",
-              border: "1px solid #1e1e1e",
-              borderRadius: "16px",
-              overflow: "hidden",
-            }}
-          >
+          <div className="detail-item-list" style={{
+            border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: "8px", overflow: "hidden",
+            background: "rgba(255,255,255,0.015)",
+          }}>
             {cat.items.map((item, i) => (
               <ItemRow key={item.name} item={item} index={i} accentColor={cat.accentColor} />
             ))}
           </div>
         )}
 
-        {/* Bottom callout */}
-        <div
-          style={{
-            marginTop: "2.5rem",
-            padding: "1.5rem",
-            borderRadius: "14px",
-            background: "#141414",
-            border: "1px solid #222",
-          }}
-        >
-          <p style={{ color: "#666", fontSize: "0.88rem", fontStyle: "italic", marginBottom: "1rem" }}>
-            Don't see what you're looking for? We can special order many bottles.
+        {/* Footer strip */}
+        <div style={{
+          marginTop: "3rem",
+          padding: "1.5rem 2rem",
+          border: `1px solid ${cat.accentColor}25`,
+          borderRadius: "8px",
+          background: `${cat.accentColor}08`,
+          display: "flex", flexWrap: "wrap",
+          alignItems: "center", justifyContent: "space-between", gap: "1rem",
+        }}>
+          <p style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            color: "#7a6a58", fontSize: "1rem", fontStyle: "italic", margin: 0,
+          }}>
+            Don't see what you're after? We can special order many bottles.
           </p>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-            <a
-              href="/contact"
-              style={{
-                padding: "0.65rem 1.25rem",
-                borderRadius: "10px",
-                background: cat.accentColor,
-                color: "#0d0d0d",
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                textDecoration: "none",
-                letterSpacing: "0.04em",
-                flexShrink: 0,
-              }}
-            >
-              Request a Bottle
-            </a>
-            <a
-              href="tel:+1XXXXXXXXXX"
-              style={{
-                padding: "0.65rem 1.25rem",
-                borderRadius: "10px",
-                border: "1px solid #333",
-                color: "#aaa",
-                fontWeight: 600,
-                fontSize: "0.85rem",
-                textDecoration: "none",
-                letterSpacing: "0.04em",
-                flexShrink: 0,
-              }}
-            >
-              Call Us
-            </a>
+            <a href="/contact" style={{
+              fontFamily: "'Jost', sans-serif",
+              padding: "0.6rem 1.25rem", borderRadius: "4px",
+              background: cat.accentColor, color: "#0f0d0a",
+              fontWeight: 500, fontSize: "0.75rem",
+              letterSpacing: "0.1em", textTransform: "uppercase",
+              textDecoration: "none",
+            }}>Request a Bottle</a>
+            <a href="tel:+1XXXXXXXXXX" style={{
+              fontFamily: "'Jost', sans-serif",
+              padding: "0.6rem 1.25rem", borderRadius: "4px",
+              border: "1px solid rgba(255,255,255,0.15)", color: "#888",
+              fontWeight: 400, fontSize: "0.75rem",
+              letterSpacing: "0.1em", textTransform: "uppercase",
+              textDecoration: "none",
+            }}>Call the Store</a>
           </div>
         </div>
       </div>
@@ -514,7 +422,9 @@ function CategoryDetail({ cat, onBack }: { cat: Category; onBack: () => void }) 
   );
 }
 
-// --- Main Products Page ---
+// ─────────────────────────────────────────────
+// MAIN PRODUCTS PAGE
+// ─────────────────────────────────────────────
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -538,174 +448,342 @@ export default function ProductsPage() {
       .filter(Boolean) as Category[];
   }, [searchTerm]);
 
-  // All hooks are above — safe to conditionally return now
   if (activeCat) {
     return <CategoryDetail cat={activeCat} onBack={() => setActiveCat(null)} />;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto pt-16 pb-10 px-6">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
-              Our Products
-            </h1>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl">
-              Browse a sample of what we carry in-store. Inventory changes often —
-              call us anytime if you're looking for something specific.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <a
-              href="tel:+1XXXXXXXXXX"
-              className="px-5 py-3 rounded-xl bg-gray-900 text-white font-semibold shadow-md hover:bg-gray-800 transition"
-            >
-              Call Store
-            </a>
-            <a
-              href="/contact"
-              className="px-5 py-3 rounded-xl border border-gray-300 bg-white font-semibold text-gray-900 shadow-sm hover:border-gray-400 hover:bg-gray-50 transition"
-            >
-              Request a Product
-            </a>
-          </div>
-        </div>
+    <div style={{ minHeight: "100vh", background: "#faf7f2", fontFamily: "'Georgia', serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
 
-        {/* Search Bar */}
-        <div className="mt-10">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search by category or product name..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-2xl border border-gray-200 bg-white px-5 py-4 pr-12 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
-            />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
-              🔍
-            </div>
-          </div>
-          {searchTerm.trim() && (
-            <p className="mt-3 text-sm text-gray-500">
-              Showing results for: <span className="font-semibold">{searchTerm}</span>
-            </p>
-          )}
-        </div>
+        .products-search:focus { outline: none; border-color: #2a1f14 !important; box-shadow: 0 0 0 3px rgba(42,31,20,0.08); }
+        .cat-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .cat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(42,31,20,0.12) !important; }
+        .cat-card:hover .cat-view-btn { background: #2a1f14 !important; }
+        .item-pill:hover { background: #ede8e0 !important; }
+        .tag-pill:hover { background: #e8e0d4 !important; border-color: #c8b89a !important; }
+      `}</style>
 
-        {/* Quick Tags */}
-        <div className="mt-6 flex flex-wrap gap-2">
-          {["Top Sellers", "New Arrivals", "Local Craft", "Gift Bottles", "Party Packs"].map(
-            (tag) => (
-              <span
-                key={tag}
-                className="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 cursor-pointer transition"
-              >
-                {tag}
-              </span>
-            )
-          )}
+      {/* ── Page Hero ── */}
+      <div style={{
+        background: "#1a1208",
+        borderBottom: "1px solid #2e2010",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        {/* Subtle texture lines */}
+        <div style={{
+          position: "absolute", inset: 0, pointerEvents: "none",
+          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px)",
+        }} />
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem 3.5rem", position: "relative" }}>
+          <p style={{
+            fontFamily: "'Jost', sans-serif", fontSize: "0.7rem",
+            letterSpacing: "0.28em", textTransform: "uppercase",
+            color: "#c8922a", marginBottom: "0.75rem",
+          }}>
+            Westford Wine & Spirits
+          </p>
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "clamp(2.8rem, 8vw, 5rem)",
+            fontWeight: 300, color: "#f0ebe0",
+            lineHeight: 1, letterSpacing: "-0.02em",
+            margin: "0 0 1.25rem",
+          }}>
+            Our Collection
+          </h1>
+          <p style={{
+            fontFamily: "'Jost', sans-serif", fontWeight: 300,
+            color: "#7a6a52", fontSize: "0.95rem", maxWidth: "480px",
+            lineHeight: 1.7, letterSpacing: "0.02em",
+          }}>
+            A curated sample of what's on our shelves. Selection changes with the seasons — call us if you're hunting something specific.
+          </p>
+
+          <div style={{ display: "flex", gap: "0.75rem", marginTop: "2rem", flexWrap: "wrap" }}>
+            <a href="tel:+1XXXXXXXXXX" style={{
+              fontFamily: "'Jost', sans-serif", fontSize: "0.72rem",
+              letterSpacing: "0.14em", textTransform: "uppercase",
+              color: "#0f0d0a", background: "#c8922a",
+              padding: "0.65rem 1.4rem", borderRadius: "3px",
+              textDecoration: "none", fontWeight: 500,
+            }}>
+              Call the Store
+            </a>
+            <a href="/contact" style={{
+              fontFamily: "'Jost', sans-serif", fontSize: "0.72rem",
+              letterSpacing: "0.14em", textTransform: "uppercase",
+              color: "#c8b89a", border: "1px solid rgba(200,184,154,0.3)",
+              padding: "0.65rem 1.4rem", borderRadius: "3px",
+              textDecoration: "none", fontWeight: 400,
+            }}>
+              Request a Bottle
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Product Grid */}
-      <div className="max-w-6xl mx-auto pb-20 px-6">
+      {/* ── Search & Filters ── */}
+      <div style={{
+        background: "#f5f0e8",
+        borderBottom: "1px solid #e4d8c8",
+        padding: "1.5rem",
+      }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div style={{ position: "relative", maxWidth: "560px" }}>
+            <span style={{
+              position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)",
+              color: "#a0907a", fontSize: "0.9rem", pointerEvents: "none",
+            }}>⌕</span>
+            <input
+              className="products-search"
+              type="text"
+              placeholder="Search spirits, wines, or beers…"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                width: "100%", padding: "0.75rem 1rem 0.75rem 2.5rem",
+                fontFamily: "'Jost', sans-serif", fontSize: "0.88rem",
+                color: "#2a1f14", background: "#fff",
+                border: "1px solid #ddd0bc", borderRadius: "4px",
+                boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s",
+              }}
+            />
+          </div>
+
+          <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
+            {["Top Sellers", "New Arrivals", "Local Craft", "Gift Bottles", "Party Packs"].map((tag) => (
+              <span key={tag} className="tag-pill" style={{
+                fontFamily: "'Jost', sans-serif", fontSize: "0.68rem",
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                color: "#7a6a52", background: "#ede8e0",
+                border: "1px solid #ddd0bc",
+                padding: "0.35rem 0.85rem", borderRadius: "2px",
+                cursor: "pointer", transition: "all 0.15s",
+              }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Category Grid ── */}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-20">
-            <h2 className="text-2xl font-bold text-gray-900">No products found</h2>
-            <p className="mt-2 text-gray-600">Try searching for something else.</p>
+          <div style={{ textAlign: "center", padding: "5rem 0" }}>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2rem", fontWeight: 300, color: "#2a1f14" }}>
+              Nothing found
+            </p>
+            <p style={{ fontFamily: "'Jost', sans-serif", color: "#a0907a", fontSize: "0.88rem", marginTop: "0.5rem" }}>
+              Try a different search term.
+            </p>
             <button
               onClick={() => setSearchTerm("")}
-              className="mt-6 px-6 py-3 rounded-xl bg-gray-900 text-white font-semibold hover:bg-gray-800 transition"
+              style={{
+                marginTop: "1.5rem", fontFamily: "'Jost', sans-serif",
+                fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase",
+                background: "#2a1f14", color: "#f0ebe0",
+                border: "none", padding: "0.65rem 1.5rem", borderRadius: "3px", cursor: "pointer",
+              }}
             >
               Clear Search
             </button>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
-            {filteredProducts.map((cat) => (
-              <div
-                key={cat.category}
-                className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-7 shadow-sm hover:shadow-lg transition"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-0 group-hover:opacity-100 transition" />
-                <div className="relative">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center text-2xl">
+          <>
+            <p style={{
+              fontFamily: "'Jost', sans-serif", fontSize: "0.7rem",
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "#b0a090", marginBottom: "2rem",
+            }}>
+              {filteredProducts.length} {filteredProducts.length === 1 ? "category" : "categories"}
+            </p>
+
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+              gap: "1.5px",
+              background: "#e4d8c8",
+              border: "1px solid #e4d8c8",
+              borderRadius: "8px",
+              overflow: "hidden",
+            }}>
+              {filteredProducts.map((cat) => (
+                <div
+                  key={cat.category}
+                  className="cat-card"
+                  style={{
+                    background: "#fff",
+                    padding: "2rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    boxShadow: "none",
+                  }}
+                >
+                  {/* Card header */}
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.875rem" }}>
+                      <div style={{
+                        width: "44px", height: "44px",
+                        borderRadius: "8px",
+                        background: `${cat.accentColor}12`,
+                        border: `1px solid ${cat.accentColor}30`,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "1.4rem", flexShrink: 0,
+                      }}>
                         {cat.icon}
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-gray-900">{cat.category}</h2>
-                        <p className="text-sm text-gray-500 mt-1">{cat.description}</p>
+                        <h2 style={{
+                          fontFamily: "'Cormorant Garamond', serif",
+                          fontSize: "1.5rem", fontWeight: 400,
+                          color: "#1a1208", margin: 0, letterSpacing: "0.01em",
+                        }}>
+                          {cat.category}
+                        </h2>
+                        <p style={{
+                          fontFamily: "'Jost', sans-serif",
+                          fontSize: "0.72rem", color: "#a0907a",
+                          letterSpacing: "0.06em", margin: "0.2rem 0 0",
+                        }}>
+                          {cat.tagline}
+                        </p>
                       </div>
                     </div>
-                    <span className="text-sm font-semibold text-gray-500">
-                      {cat.items.length} items
+                    <span style={{
+                      fontFamily: "'Jost', sans-serif",
+                      fontSize: "0.65rem", letterSpacing: "0.1em",
+                      color: cat.accentColor,
+                      border: `1px solid ${cat.accentColor}40`,
+                      padding: "0.2rem 0.55rem", borderRadius: "2px",
+                      whiteSpace: "nowrap", marginTop: "0.2rem",
+                    }}>
+                      {cat.subcategories
+                        ? `${cat.subcategories.reduce((s, sub) => s + sub.items.length, 0)} bottles`
+                        : `${cat.items.length} bottles`}
                     </span>
                   </div>
 
-                  <div className="mt-6">
-                    <ul className="space-y-2 text-gray-700">
-                      {cat.items.slice(0, 5).map((item) => (
-                        <li
-                          key={item.name}
-                          className="flex items-center justify-between rounded-lg px-3 py-2 bg-gray-50 border border-gray-100 hover:bg-gray-100 transition"
-                        >
-                          <span className="font-medium">{item.name}</span>
-                          <span className="text-gray-400">→</span>
-                        </li>
-                      ))}
-                      {cat.items.length > 5 && (
-                        <li className="px-3 py-2 text-sm text-gray-400 italic">
-                          + {cat.items.length - 5} more…
-                        </li>
-                      )}
-                    </ul>
+                  {/* Item pills */}
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                    {cat.items.slice(0, 5).map((item) => (
+                      <div key={item.name} className="item-pill" style={{
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        padding: "0.55rem 0.75rem",
+                        background: "#faf7f2", border: "1px solid #ede8e0",
+                        borderRadius: "4px", transition: "background 0.15s", cursor: "default",
+                      }}>
+                        <span style={{ fontFamily: "'Jost', sans-serif", fontSize: "0.85rem", color: "#2a1f14", fontWeight: 400 }}>
+                          {item.name}
+                        </span>
+                        <span style={{ fontFamily: "'Jost', sans-serif", fontSize: "0.65rem", color: "#b0a090", letterSpacing: "0.08em" }}>
+                          {item.style}
+                        </span>
+                      </div>
+                    ))}
+                    {cat.items.length > 5 && (
+                      <p style={{
+                        fontFamily: "'Jost', sans-serif", fontSize: "0.75rem",
+                        color: "#b0a090", fontStyle: "italic",
+                        padding: "0.3rem 0.75rem", margin: 0,
+                      }}>
+                        + {cat.items.length - 5} more
+                      </p>
+                    )}
                   </div>
 
+                  {/* CTA */}
                   <button
+                    className="cat-view-btn"
                     onClick={() => setActiveCat(cat)}
-                    className="mt-6 w-full rounded-xl bg-gray-900 text-white py-3 font-semibold hover:bg-gray-800 transition"
+                    style={{
+                      marginTop: "1.5rem",
+                      fontFamily: "'Jost', sans-serif",
+                      fontSize: "0.72rem", letterSpacing: "0.16em", textTransform: "uppercase",
+                      background: "#2a1f14", color: "#f0ebe0",
+                      border: "none", borderRadius: "4px",
+                      padding: "0.75rem", width: "100%",
+                      cursor: "pointer", transition: "background 0.2s",
+                    }}
                   >
-                    View More {cat.category}
+                    Browse {cat.category} →
                   </button>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         )}
 
-        {/* Bottom Callout */}
-        <div className="mt-16 rounded-3xl border border-gray-200 bg-gradient-to-r from-gray-900 to-gray-800 px-10 py-12 text-white shadow-lg">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-            <div>
-              <h3 className="text-3xl font-extrabold">Looking for something rare?</h3>
-              <p className="mt-3 text-gray-200 max-w-2xl">
-                We can special order many bottles depending on availability. Call or send a
-                request and we'll help you find it.
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <a
-                href="/contact"
-                className="px-6 py-3 rounded-xl bg-white text-gray-900 font-bold shadow hover:bg-gray-100 transition"
-              >
-                Send Request
-              </a>
-              <a
-                href="tel:+1XXXXXXXXXX"
-                className="px-6 py-3 rounded-xl border border-white/30 text-white font-bold hover:bg-white/10 transition"
-              >
-                Call Now
-              </a>
-            </div>
+        {/* ── Bottom Banner ── */}
+        <div style={{
+          marginTop: "4rem",
+          background: "#1a1208",
+          borderRadius: "8px",
+          padding: "3rem 2.5rem",
+          display: "flex", flexWrap: "wrap",
+          alignItems: "center", justifyContent: "space-between",
+          gap: "2rem",
+          position: "relative", overflow: "hidden",
+        }}>
+          <div style={{
+            position: "absolute", top: "-60px", right: "-60px",
+            width: "300px", height: "300px", borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(200,146,42,0.12) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }} />
+          <div style={{ position: "relative" }}>
+            <p style={{
+              fontFamily: "'Jost', sans-serif", fontSize: "0.68rem",
+              letterSpacing: "0.22em", textTransform: "uppercase",
+              color: "#c8922a", marginBottom: "0.5rem",
+            }}>
+              Special Orders Welcome
+            </p>
+            <h3 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(1.6rem, 4vw, 2.4rem)", fontWeight: 300,
+              color: "#f0ebe0", margin: "0 0 0.75rem", lineHeight: 1.1,
+            }}>
+              Hunting something rare?
+            </h3>
+            <p style={{
+              fontFamily: "'Jost', sans-serif", fontWeight: 300,
+              color: "#7a6a52", fontSize: "0.88rem", maxWidth: "440px", lineHeight: 1.7,
+            }}>
+              We source hard-to-find bottles on request. Reach out and we'll track it down.
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", position: "relative" }}>
+            <a href="/contact" style={{
+              fontFamily: "'Jost', sans-serif", fontSize: "0.72rem",
+              letterSpacing: "0.14em", textTransform: "uppercase",
+              color: "#0f0d0a", background: "#c8922a",
+              padding: "0.75rem 1.5rem", borderRadius: "3px",
+              textDecoration: "none", fontWeight: 500,
+            }}>
+              Send a Request
+            </a>
+            <a href="tel:+1XXXXXXXXXX" style={{
+              fontFamily: "'Jost', sans-serif", fontSize: "0.72rem",
+              letterSpacing: "0.14em", textTransform: "uppercase",
+              color: "#c8b89a", border: "1px solid rgba(200,184,154,0.25)",
+              padding: "0.75rem 1.5rem", borderRadius: "3px",
+              textDecoration: "none", fontWeight: 400,
+            }}>
+              Call Now
+            </a>
           </div>
         </div>
 
-        <p className="mt-8 text-center text-sm text-gray-500">
-          * Product selection may vary by season and availability.
+        <p style={{
+          fontFamily: "'Jost', sans-serif", fontSize: "0.7rem",
+          color: "#c0b0a0", textAlign: "center", marginTop: "2rem",
+          letterSpacing: "0.06em",
+        }}>
+          * Selection varies by season and availability.
         </p>
       </div>
     </div>
