@@ -438,11 +438,32 @@ export default function ProductsPage() {
         const categoryMatch =
           cat.category.toLowerCase().includes(term) ||
           cat.description.toLowerCase().includes(term);
+
+        if (categoryMatch) return cat;
+
+        // Check flat items
         const filteredItems = cat.items.filter((item) =>
           item.name.toLowerCase().includes(term)
         );
-        if (categoryMatch) return cat;
-        if (filteredItems.length > 0) return { ...cat, items: filteredItems };
+
+        // Check subcategory items
+        const filteredSubs = cat.subcategories
+          ?.map((sub) => ({
+            ...sub,
+            items: sub.items.filter((item) =>
+              item.name.toLowerCase().includes(term)
+            ),
+          }))
+          .filter((sub) => sub.items.length > 0);
+
+        if (filteredItems.length > 0 || (filteredSubs && filteredSubs.length > 0)) {
+          return {
+            ...cat,
+            items: filteredItems,
+            subcategories: filteredSubs,
+          };
+        }
+
         return null;
       })
       .filter(Boolean) as Category[];
